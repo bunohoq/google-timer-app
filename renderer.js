@@ -51,9 +51,17 @@ let running = false;
 let lastTick = null;
 let rafId = null;
 
+function getPieColor(minutes) {
+  if (minutes > 5) return '#2be830';
+  if (minutes > 1) return '#f5a623';
+  return '#e74c3c';
+}
+
 function drawPie(minutes) {
   const clamped = Math.max(0, Math.min(60, minutes));
   const angle = clamped * 6;
+
+  pieEl.setAttribute('fill', getPieColor(clamped));
 
   if (clamped <= 0.001) {
     pieEl.setAttribute('d', '');
@@ -104,6 +112,16 @@ function angleFromEvent(evt) {
   return deg;
 }
 
+const DRAG_SNAP_MINUTES = 0.5;
+
+function snapMinutes(minutes) {
+  return Math.round(minutes / DRAG_SNAP_MINUTES) * DRAG_SNAP_MINUTES;
+}
+
+function minutesFromEvent(evt) {
+  return snapMinutes(angleFromEvent(evt) / 6);
+}
+
 function stopCountdown() {
   running = false;
   lastTick = null;
@@ -124,12 +142,18 @@ function beep() {
   osc.stop(ctx.currentTime + 0.6);
 }
 
+// 부동소수점 오차로 0에 정확히 도달하지 못하고 남는 값 보정용 임계값(0.5초)
+const END_THRESHOLD_MINUTES = 0.5 / 60;
+
 function tick(now) {
   if (!running) return;
   if (lastTick === null) lastTick = now;
   const deltaMinutes = (now - lastTick) / 60000;
   lastTick = now;
   remainingMinutes = Math.max(0, remainingMinutes - deltaMinutes);
+  if (remainingMinutes < END_THRESHOLD_MINUTES) {
+    remainingMinutes = 0;
+  }
   render();
 
   if (remainingMinutes <= 0) {
@@ -153,13 +177,13 @@ let dragging = false;
 dial.addEventListener('mousedown', (evt) => {
   dragging = true;
   stopCountdown();
-  remainingMinutes = angleFromEvent(evt) / 6;
+  remainingMinutes = minutesFromEvent(evt);
   render();
 });
 
 window.addEventListener('mousemove', (evt) => {
   if (!dragging) return;
-  remainingMinutes = angleFromEvent(evt) / 6;
+  remainingMinutes = minutesFromEvent(evt);
   render();
 });
 

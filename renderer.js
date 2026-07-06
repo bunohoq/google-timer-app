@@ -129,17 +129,8 @@ function stopCountdown() {
   rafId = null;
 }
 
-let audioCtx = null;
-
-function getAudioCtx() {
-  if (!audioCtx) {
-    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-  }
-  return audioCtx;
-}
-
 function beep() {
-  const ctx = getAudioCtx();
+  const ctx = new (window.AudioContext || window.webkitAudioContext)();
   const osc = ctx.createOscillator();
   const gain = ctx.createGain();
   osc.type = 'sine';
@@ -149,20 +140,6 @@ function beep() {
   osc.connect(gain).connect(ctx.destination);
   osc.start();
   osc.stop(ctx.currentTime + 0.6);
-}
-
-// 다이얼을 스냅 단위로 돌릴 때 나는 짤깍 소리 (빠르게 돌리면 드르륵처럼 연속으로 울림)
-function playDragTick() {
-  const ctx = getAudioCtx();
-  const osc = ctx.createOscillator();
-  const gain = ctx.createGain();
-  osc.type = 'square';
-  osc.frequency.value = 250;
-  gain.gain.setValueAtTime(0.09, ctx.currentTime);
-  gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.03);
-  osc.connect(gain).connect(ctx.destination);
-  osc.start();
-  osc.stop(ctx.currentTime + 0.03);
 }
 
 // 부동소수점 오차로 0에 정확히 도달하지 못하고 남는 값 보정용 임계값(0.5초)
@@ -197,23 +174,17 @@ function startCountdown() {
 // 드래그로 시간 설정
 let dragging = false;
 
-function setDragMinutes(minutes) {
-  if (minutes !== remainingMinutes) {
-    playDragTick();
-  }
-  remainingMinutes = minutes;
-  render();
-}
-
 dial.addEventListener('mousedown', (evt) => {
   dragging = true;
   stopCountdown();
-  setDragMinutes(minutesFromEvent(evt));
+  remainingMinutes = minutesFromEvent(evt);
+  render();
 });
 
 window.addEventListener('mousemove', (evt) => {
   if (!dragging) return;
-  setDragMinutes(minutesFromEvent(evt));
+  remainingMinutes = minutesFromEvent(evt);
+  render();
 });
 
 window.addEventListener('mouseup', () => {

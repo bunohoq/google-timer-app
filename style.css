@@ -1,0 +1,141 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  user-select: none;
+  font-family: -apple-system, "Apple SD Gothic Neo", sans-serif;
+}
+
+html, body {
+  background: transparent;
+  overflow: hidden;
+}
+
+.titlebar {
+  height: 22px;
+  -webkit-app-region: drag;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 8px;
+  color: #ccc;
+  font-size: 12px;
+}
+
+.grip {
+  letter-spacing: 1px;
+  opacity: 0.6;
+}
+
+.close-btn {
+  -webkit-app-region: no-drag;
+  width: 18px;
+  height: 18px;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: #999;
+  font-size: 14px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.close-btn:hover {
+  background: #e74c3c;
+  color: #fff;
+}
+
+.frame {
+  margin: 4px auto 0;
+  width: 244px;
+  padding: 10px;
+  background: #191919;
+  border-radius: 18px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+  -webkit-app-region: no-drag;
+}
+
+#dial {
+  display: block;
+  margin: 0 auto;
+  cursor: pointer;
+}
+
+.face {
+  fill: #fdfdfb;
+  stroke: none;
+}
+
+.pie {
+  fill: #2be830;
+}
+
+.tick {
+  stroke: #222;
+  stroke-width: 1.5;
+}
+
+.tick.major {
+  stroke-width: 2.5;
+}
+
+.label {
+  font-size: 22px;
+  fill: #1a1a1a;
+  text-anchor: middle;
+  dominant-baseline: middle;
+  font-weight: 500;
+}
+
+.knob {
+  fill: #fdfdfb;
+  stroke: #d8d8d4;
+  stroke-width: 2;
+}
+
+.bottom-row {
+  margin-top: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 6px;
+}
+
+.max-label {
+  font-size: 10px;
+  color: #ccc;
+  border: 1px solid #555;
+  border-radius: 10px;
+  padding: 2px 8px;
+}
+
+#digital {
+  font-size: 13px;
+  color: #eee;
+  font-variant-numeric: tabular-nums;
+}
+
+.start-btn {
+  display: block;
+  width: 100%;
+  margin-top: 10px;
+  padding: 8px 0;
+  border: none;
+  border-radius: 10px;
+  background: #2be830;
+  color: #10310f;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.start-btn:disabled {
+  background: #444;
+  color: #888;
+  cursor: default;
+}
+
+.start-btn.running {
+  background: #3a3a3a;
+  color: #eee;
+}

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<title>Mini Timer</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="titlebar">
+    <span class="grip">⋮⋮</span>
+    <button id="closeBtn" class="close-btn">×</button>
+  </div>
+
+  <div class="frame">
+    <svg id="dial" viewBox="0 0 300 300" width="230" height="230">
+      <circle cx="150" cy="150" r="140" class="face" />
+
+      <!-- 남은 시간 빨간 파이 -->
+      <path id="pie" class="pie"></path>
+
+      <!-- 눈금 -->
+      <g id="ticks"></g>
+
+      <!-- 숫자 -->
+      <g id="labels"></g>
+
+      <!-- 가운데 손잡이 -->
+      <circle id="knob" cx="150" cy="150" r="34" class="knob" />
+    </svg>
+
+    <div class="bottom-row">
+      <span class="max-label">60 Min</span>
+      <span id="digital">00:00</span>
+    </div>
+
+    <button id="startBtn" class="start-btn">시작</button>
+  </div>
+
+  <script src="renderer.js"></script>
+</body>
+</html>
